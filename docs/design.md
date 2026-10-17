@@ -579,6 +579,22 @@ asked the system for less motion.
 - A wrapper that clips a track let out with its tab stays until the
   plate's move is over: taken off sooner, the plate under it is a new
   element and plays its move again.
+- gpui holds an inactive window's animations to 30 frames a second to
+  save energy. A window that animates while never active (tabflip's
+  list, which must not take the keyboard from the app in front) opts
+  out with `inactive_frame_interval: None` on its `WindowOptions`; at
+  30 a 150 ms slide was a jump with one smeared frame.
+- `ease_out_quint` over a short slide is a jump: over 150 ms it does
+  most of the travel in its first 40. A short motion of a plate takes a
+  cubic ease, and words whose colour changes with it take the colour
+  only as far as the plate covers them.
+- A border is inside the box. A scroller given exactly its rows' room
+  overflows by its hairline, and `scroll_to_item` then nudges the whole
+  list by that much at the first and last row: count the edge in the
+  height.
+- Motion runs on gpui's own clock (`with_animation`, keyed so it plays
+  once), never on a frame requested at every draw while something
+  moves: tabflip's list did that first and the slide was rough.
 
 ## Languages
 
