@@ -457,6 +457,13 @@ For a product that lives in the menu bar.
   timer, each row saying whether it is given and the one thing to do
   when it is not. When the system's question or System Settings are
   done, the settings come back in front, where the next permission is.
+  Whether a permission is given is whether the thing it allows can be
+  done (the tap made), tried after the press and at each change the
+  system reports: `AXIsProcessTrusted` answers a running process with
+  its launch-time value. For Accessibility, Allow first forgets the
+  entry the system keeps for the app (`tccutil reset`): the system
+  binds a grant to the signature, and an entry made for an earlier copy
+  signed otherwise shows as on and counts for nothing.
 - **Something the app shows over every other app** (a pill while
   listening) is a borderless non-activating panel that ignores the
   pointer, so the app in front keeps the keyboard.

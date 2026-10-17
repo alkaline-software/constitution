@@ -230,6 +230,15 @@ so far, worth carrying into a new product:
 - **Two bundles on the disk** (`dist/`, a scratch folder, an old dev
   build in `target/debug`): Launchpad and Spotlight list each. The dev
   bundle lives in a `.noindex` folder, and step 8 removes the rest.
+- **A grant bound to an old signature:** macOS binds an Accessibility
+  grant to the app's code signature. An entry made for an earlier copy
+  signed otherwise (a build before the Developer ID releases) shows as
+  on in System Settings and counts for nothing for the new copy, and
+  switching it off and on changes nothing; only removing it and
+  granting again works (tabflip v0.2.2). Allow does that itself:
+  `tccutil reset Accessibility <bundle id>` (no `sudo`; the bundle must
+  be on disk) before the system's question, so one press and one switch
+  is all it takes whether or not an older copy was ever allowed.
 - **A grant read once:** `AXIsProcessTrusted` answers a running process
   with its launch-time value, so a permission given while the app runs
   went unseen until a relaunch (tabflip v0.2.0). Whether a permission is
