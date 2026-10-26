@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Starter
+Comment=A minimal desktop app to start a product from.
+Exec=starter
+Icon=${SNAP}/meta/gui/icon.png
+StartupWMClass=Starter
+Categories=Development;
+Terminal=false

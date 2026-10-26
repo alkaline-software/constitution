@@ -2,63 +2,33 @@
 
 ## What this is
 
-The constitution of **Alkaline Software**: the standards the studio's
-products are built to, distilled from the products that exist, kept in
-one place so the next product starts where the last one got to.
-Canonical source: https://github.com/alkaline-software/constitution.
+The constitution of **Alkaline Software**: the standards the studio's products are built to, kept in one place so the next product starts where the last one got to. Five documents under `docs/` say what the standard is and why; `template/` is the standard as a product that builds, tests and runs.
 
-It is a template, not a dependency. A new product is seeded from it;
-once the product has its own docs, those docs are the product's whole
-standard and nothing in the product points back here. Emaki, Kotoba
-and tabflip each carry a full `docs/design.md` and `WORKFLOW.md` of
-their own and do not read this repo.
+It is a template, not a dependency. A new product is made from `template/` by `scripts/new-product.sh`; once the product has its own docs, those docs are its whole standard and nothing in the product points back here.
+
+## Rules
+
+- **It stands alone.** Nothing here names or points to another repository, product or folder outside this one. A rule says what is so and why in general terms; a pattern that needs code has it in `template/`. A product's history (its versions, its names) does not appear.
+- **The documents and the template agree.** A helper, a file or a variable a document names exists in `template/` under that name. A change to one is a change to both.
+- **The template builds and its tests pass** (`cargo test -p starter-core -p starter-app` in `template/`), and a product made by `scripts/new-product.sh` does too. Check both after a change to either.
+- **The template is looked at, not only built.** A change to what it draws is shot in both appearances and in a long language (`template/docs/probing.md`).
 
 ## The files
 
-Every standard lives under `docs/`. This file and `README.md` (how to
-use the constitution, for a person opening it) are the only ones at the
-root.
-
 | Starting | Read |
 |---|---|
-| Anything a person sees: a window, a page, a control, a colour, an icon, a menu bar item, motion, a settings panel, the languages | `docs/design.md` |
-| How a product is built and released: the version, the changelog, the checks, the tag, CI, signing and notarizing, the disk image, the update inside the app, the dev build, cleaning up | `docs/workflow.md` |
+| Anything a person sees: a window, a page, a control, a button, a color, the faces, an icon (Tabler's, Catppuccin's, one drawn by hand), the app icon, a menu bar item, motion, scrollers, a settings window, the languages | `docs/design.md` |
+| How a product is put together: Rust and GPUI, the two crates, the vendored toolkit, the repository's folders, the files of the app crate, probing | `docs/structure.md` |
+| macOS, Windows and Linux on Intel and ARM: what each needs, what is gated, the installers, checking off a Mac | `docs/platforms.md` |
+| How a product keeps its words: `AGENTS.md`, a part's doc, the changelog, how a doc is written | `docs/docs.md` |
+| How a product is built and released: the dev build, the version, the checks, the tag, CI, signing and notarizing, trying the installers in VMs, the stores, the update inside the app, cleaning up | `docs/workflow.md`, then `template/docs/release.md` |
+| The template's code | `template/AGENTS.md` |
 
-More will come (how a repo is laid out, how a product writes its docs),
-each as a file under `docs/` with a row here.
+## Bringing something back
 
-## Starting a new product
-
-- **Read the files the table names, then write the product's own.** The
-  product's `docs/design.md` and `WORKFLOW.md` are copies of what
-  applies, in the product's own terms: its accent, its icon's subject,
-  its window's size, the parts it has, the helpers in its code that draw
-  each pattern; its repository, its asset names, its bundle identifier,
-  the installers it ships. What does not apply is left out. What is left
-  is the product's, to change as the product needs.
-- **Take the scripts with the words.** `docs/workflow.md` names the
-  scripts a product carries (`release-check.sh`, `release-mac.sh`,
-  `release-publish.sh`, `release-clean.sh`, `dev-app.sh`,
-  `make-icon.sh`, the disk image's background). Copy them from the
-  newest product (tabflip, then Kotoba) and change the names; they are
-  the standard in runnable form.
-- **Nothing in the product refers here.** Its `AGENTS.md` names its own
-  `docs/` and `WORKFLOW.md`, as Emaki's, Kotoba's and tabflip's do. A
-  member who wants the studio's reasoning behind a rule comes to this
-  repo by its URL.
-- **Bring back what the next product would want.** A standard learned
-  in a product that any product would hit (a palette rule, a motion
-  pattern, a trap in the toolkit, a release that went wrong) is written
-  here too, in the product's own words, so the template stays as good
-  as the newest product. The product's doc is not changed for it.
+A standard a product learned that any product would hit (a palette rule, a motion pattern, a trap in the toolkit, a release that went wrong) is written here: the rule and its reason in the document it belongs to, in general terms, and the code in `template/` where it is code. The product's own doc is not changed for it.
 
 ## Writing things down
 
-- Write what is so now and why, in plain words, to someone who can
-  build software. The reason stays with the rule: a template that only
-  says what to do is copied without thought.
-- Name the product a rule came from where it helps (Emaki's seven
-  accents, Kotoba's menu bar, tabflip's list), so a reader can go and
-  see it working.
-- No em dashes. Keep the voice the files have: short declarative
-  sentences, the reason after the rule, numbers in tables.
+- Write what is so now and why, in plain words, to someone who can build software. The reason stays with the rule: a template that only says what to do is copied without thought.
+- The rules of `docs/docs.md`, Writing, hold here: no hard wraps, American spelling, no em dashes, short declarative sentences, the reason after the rule, numbers in tables.
