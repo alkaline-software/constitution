@@ -278,15 +278,6 @@
     "de": "Hell",
     "es": "Claro"
   },
-  "Made by {studio}.": {
-    "zh-Hans": "由 {studio} 制作。",
-    "zh-Hant": "由 {studio} 製作。",
-    "ja": "{studio} が制作しています。",
-    "ko": "{studio}이(가) 만들었습니다.",
-    "fr": "Conçu par {studio}.",
-    "de": "Gemacht von {studio}.",
-    "es": "Hecho por {studio}."
-  },
   "Minimize": {
     "zh-Hans": "最小化",
     "zh-Hant": "縮到最小",
@@ -530,15 +521,6 @@
     "de": "Seitenleiste (⌘B)",
     "es": "Barra lateral (⌘B)"
   },
-  "Source": {
-    "zh-Hans": "源代码",
-    "zh-Hant": "原始碼",
-    "ja": "ソース",
-    "ko": "소스",
-    "fr": "Source",
-    "de": "Quelltext",
-    "es": "Código fuente"
-  },
   "Start": {
     "zh-Hans": "开始",
     "zh-Hant": "開始",
@@ -736,5 +718,14 @@
     "fr": "{studio} présente",
     "de": "{studio} präsentiert",
     "es": "{studio} presenta"
+  },
+  "Website": {
+    "zh-Hans": "网站",
+    "zh-Hant": "網站",
+    "ja": "Web サイト",
+    "ko": "웹사이트",
+    "fr": "Site web",
+    "de": "Website",
+    "es": "Sitio web"
   }
 }

@@ -61,6 +61,9 @@ pub struct Shell {
     pub(crate) menus: Menus,
     focus: FocusHandle,
     ambient: Entity<Ambient>,
+    /// The native window's ground as last set: AppKit is told of a change
+    /// only, never at every frame.
+    ground: Cell<Option<Hsla>>,
     sidebar_open: bool,
     /// The sidebar's coming or going: which, and when it began.
     side_anim: Option<(bool, Instant)>,
@@ -110,6 +113,7 @@ impl Shell {
             menus: Menus::default(),
             focus: cx.focus_handle(),
             ambient: cx.new(|_| Ambient::default()),
+            ground: Cell::new(None),
             sidebar_open: ui.sidebar_open.unwrap_or(true),
             side_anim: None,
             side_scroll: ScrollHandle::new(),
@@ -272,6 +276,10 @@ impl Shell {
                 .child(Icon::new(icon).with_size(px(16.)).text_color(theme.muted_foreground))
         };
         let left = if cfg!(target_os = "macos") { TRAFFIC_W } else { px(10.) };
+        // A newer version waiting: a dot on the gear, seen with the settings
+        // shut, as About's in the rail is with them open.
+        let waiting = self.update.found.is_some();
+        let gear_dot = self.motion.presence("gear-dot", waiting, cx);
         h_flex()
             .absolute()
             .top(px(1.) + FRAME / 2.)
@@ -282,7 +290,7 @@ impl Shell {
                 crate::widgets::swallow_click(window, cx);
                 this.toggle_sidebar(window, cx)
             })))
-            .child(button("strip-settings", IconName::Settings, t("Settings (⌘,)").into()).on_click(cx.listener(|this, _, window, cx| {
+            .child(button("strip-settings", IconName::Settings, t("Settings (⌘,)").into()).relative().children(crate::widgets::waiting_dot(waiting, gear_dot, theme.primary)).on_click(cx.listener(|this, _, window, cx| {
                 crate::widgets::swallow_click(window, cx);
                 this.open_settings(None, window, cx)
             })))
@@ -627,7 +635,10 @@ impl Render for Shell {
         self.scrollers.begin();
         let theme = cx.theme().clone();
         let frame = theme.title_bar;
-        crate::sys::set_window_ground(window, frame.to_rgb());
+        if self.ground.get() != Some(frame) {
+            self.ground.set(Some(frame));
+            crate::sys::set_window_ground(window, frame.to_rgb());
+        }
         if self.sidebar_moving() {
             window.request_animation_frame();
         }
@@ -749,6 +760,9 @@ impl Shell {
                 "fold" => self.fold_open = true,
                 "sidebar" => self.toggle_sidebar(window, cx),
                 "work" => self.working = true,
+                // A newer version waits, as a check finding one says: the
+                // gear's and About's dots. Nothing is fetched.
+                "updatefound" => self.update.found = Some("9.9.9".into()),
                 "menu" => {
                     self.pressed_row = Some(2);
                     self.menus.show("row", point(px(420.), px(560.)), vec![Entry::choice("open", "icons/external-link.svg", t("Open")), Entry::Rule, Entry::choice("copy", "icons/copy.svg", t("Copy Name")), Entry::choice("delete", "icons/trash.svg", t("Delete"))]);

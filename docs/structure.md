@@ -74,6 +74,7 @@ The template's files, each with one job; a product keeps the names, so a reader 
 - **State in one folder**, `~/.<app>`, from `paths.rs`, overridden by `<APP>_HOME`.
 - **Writes are a temp file and a rename** (`paths::write_atomic`). A file the window reads is never seen half written.
 - **Update** in `update.rs` (`docs/workflow.md`, The update inside the app).
+- **A local model is run off the main thread and asked no more than it must.** Its lock is held for all of a load or a run, so nothing on the main thread takes it, even to look (`docs/design.md`, Frames). What is the same in every prompt is read once: the instructions before the last turn took three quarters of a short request, 685 ms of 900. A copy of the model's memory is kept once that part is read, and each request goes on from it while that part is the same. A rollback is no way to it: a model with a recurrent state refuses one. Such a change must leave what the model writes as it was, word for word.
 
 ## Probing
 
@@ -83,3 +84,4 @@ Every product can be driven from a script, so a change is looked at by an agent 
 - Variables pick what the copy shows: an appearance, a language, a section of the settings (`<APP>_APPEARANCE`, `<APP>_LANG`, `<APP>_SETTINGS`), and a list of steps (`<APP>_GO`).
 - `<APP>_SHOT=<file>` writes a picture of the window once it is drawn, then quits. A process may take a picture of its own windows without Screen Recording access.
 - A synthetic click does not reach a background window, so a picture of the state a click leads to does not show the click works. Say what was checked and what was not.
+- Speed is measured before it is worked on, and again after, with a stopwatch in a copy that is taken out when it is done (`docs/probing.md`, Measuring). The first guess is often wrong: a change that looked right saved nothing until it was timed, and a cost that looked like a slow frame was a wait outside any frame.

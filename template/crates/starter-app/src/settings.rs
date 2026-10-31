@@ -23,13 +23,18 @@ use starter_core::update;
 use crate::i18n::{phrase, t, tf, weave};
 use crate::menu::Entry;
 use crate::shell::{Escape, OpenSettings, Shell};
-use crate::widgets::{choice_pill, page_in, small_pill, wordmark, Press};
+use crate::widgets::{choice_pill, kanji, page_in, small_pill, wordmark, Press};
 
 /// The window's size as it opens, and the least it is dragged to. It is
 /// never narrower than it opens: the rows are laid out for that width,
 /// and narrower, names broke mid-word. Shorter, the page scrolls.
 pub const SETTINGS_W: Pixels = px(820.);
 pub const SETTINGS_H: Pixels = px(600.);
+/// About's name in kanji, for a product with a Japanese name (`Some("絵巻")`);
+/// a product with an English name has none.
+const KANJI: Option<&str> = None;
+/// The product's site, for About's first pill, once it has one.
+const SITE: Option<&str> = None;
 const SETTINGS_MIN: Size<Pixels> = Size { width: SETTINGS_W, height: px(460.) };
 const RAIL_W: Pixels = px(190.);
 const PAGE_X: Pixels = px(36.);
@@ -350,29 +355,38 @@ impl Shell {
         vec![group(Some(t("Sample").into()), None, vec![line(t("A switch").into(), Some(t("A line under a name only where the name does not say it all.").into()), switch, &theme)], &theme)]
     }
 
-    /// About: the title card, set as a film's first one is, the credits,
-    /// and the updates under them.
+    /// About, the same in every product: the title card, set as a film's
+    /// first one is, the pills to the source and the notes, and the updates.
     fn about_rows(&mut self, cx: &mut Context<Self>) -> Vec<AnyElement> {
         let theme = cx.theme().clone();
-        let link = |id: &'static str, words: &'static str, url: &'static str| {
-            div().id(id).text_color(theme.link).cursor_pointer().hover(|s| s.underline()).on_click(move |_, _, _| crate::sys::open(url)).child(t(words)).into_any_element()
-        };
+        let hover = theme.link;
+        let studio = div()
+            .id("studio-link")
+            .cursor_pointer()
+            .text_color(theme.foreground)
+            .text_decoration_1()
+            .text_decoration_color(theme.foreground.opacity(0.35))
+            .hover(move |s| s.text_color(hover).text_decoration_color(hover))
+            .on_click(|_, _, _| crate::sys::open("https://github.com/alkaline-software"))
+            .child("Alkaline Software")
+            .into_any_element();
         let title = v_flex()
+            .w_full()
             .items_center()
+            .pt(px(30.))
+            .pb(px(28.))
+            .child(weave(&t("{studio} presents"), vec![("studio", studio)], h_flex().text_size(px(14.)).text_color(theme.muted_foreground).gap(px(0.))))
+            .child(img("icon/icon-512.png").mt(px(18.)).size(px(88.)))
+            .child(h_flex().mt(px(6.)).items_center().child(wordmark("Starter", 42., theme.primary, cx)).when_some(KANJI, |d, k| d.child(kanji(k, 42., theme.primary, cx))))
+            .child(div().mt(px(4.)).text_size(px(12.5)).text_color(theme.muted_foreground).child(tf("Version {version}", &[("version", &update::current_version())])));
+        let pills = h_flex()
+            .w_full()
+            .justify_center()
+            .pt(px(4.))
             .gap(px(8.))
-            .py(px(26.))
-            .child(div().text_size(px(11.)).text_color(theme.muted_foreground).child(tf("{studio} presents", &[("studio", &"Alkaline Software")])))
-            .child(img("icon/icon-512.png").size(px(84.)))
-            .child(wordmark("Starter", 26., theme.primary, cx))
-            .child(div().text_size(px(11.5)).text_color(theme.muted_foreground).child(tf("Version {version}", &[("version", &update::current_version())])))
-            .child(weave(&t("Made by {studio}."), vec![("studio", link("studio-link", "Alkaline Software", "https://github.com/alkaline-software"))], h_flex().pt(px(6.)).text_size(px(12.5)).gap(px(0.))))
-            .child(
-                h_flex()
-                    .pt(px(6.))
-                    .gap(px(8.))
-                    .child(small_pill("about-source", "icons/github.svg", t("Source"), Press::Quiet, false, &theme).on_click(|_, _, _| crate::sys::open(&update::repo_page())))
-                    .child(small_pill("about-notes", "icons/book-open.svg", t("Release Notes"), Press::Quiet, false, &theme).on_click(|_, _, _| crate::sys::open(&update::release_page(update::current_version())))),
-            );
+            .when_some(SITE, |d, url| d.child(small_pill("about-site", "icons/globe.svg", t("Website"), Press::Quiet, false, &theme).h(px(28.)).on_click(move |_, _, _| crate::sys::open(url))))
+            .child(small_pill("about-source", "icons/github.svg", "GitHub", Press::Quiet, false, &theme).h(px(28.)).on_click(|_, _, _| crate::sys::open(&update::repo_page())))
+            .child(small_pill("about-notes", "icons/file-text.svg", t("Release Notes"), Press::Quiet, false, &theme).h(px(28.)).on_click(|_, _, _| crate::sys::open(&update::release_page(update::current_version()))));
         let u = self.update.clone();
         let (icon, words, kind) = match (&u.found, u.downloading) {
             (_, Some(p)) => ("icons/download.svg", tf("Downloading… {percent}%", &[("percent", &p)]), Press::Primary),
@@ -400,9 +414,9 @@ impl Shell {
             }),
             cx,
         );
-        let mut rows = vec![group(None, None, vec![title.into_any_element()], &theme)];
+        let mut rows = vec![group(None, None, vec![title.into_any_element()], &theme), pills.into_any_element()];
         if !update::from_store() {
-            rows.push(group(None, None, vec![line(t("Updates").into(), said, button.into_any_element(), &theme), line(t("Check automatically").into(), None, check, &theme)], &theme));
+            rows.push(div().w_full().pt(px(12.)).child(group(None, None, vec![line(t("Updates").into(), said, button.into_any_element(), &theme), line(t("Check automatically").into(), None, check, &theme)], &theme)).into_any_element());
         }
         rows
     }
