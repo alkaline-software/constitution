@@ -59,10 +59,27 @@
 // Otherwise the body is an inset squircle with a margin and a shadow: the
 // PNGs the window and the site show.
 //
-// The ground, the navy, the amber and the violet spark are the studio's and
-// the same in every icon. ACCENT is the product's accent at its dark shade,
-// in the one place the subject has for a color of its own.
+// The navy, the amber and the violet spark are the studio's and the same in
+// every icon. ACCENT is the product's accent at its dark shade, in the one
+// place the subject has for a color of its own. The ground is the studio's
+// cream with a fifth of the accent in it (`ground`): ACCENT_LIGHT and
+// ACCENT_DARK are the accent's base shades in the two appearances
+// (docs/design.md, The accents), and a product sets all three to its own.
 const NAVY = '#2b2556', AMBER = '#ffb83e', VIOLET = '#6a3fd9', ACCENT = '#94a7ed';
+const ACCENT_LIGHT = '#5061B3', ACCENT_DARK = '#94A7ED';
+const CREAM = ['#fdf8ee', '#f1e4d0'];   // the studio's ground, top left to bottom right
+
+// The ground with the accent in it: each end of the cream mixed with the
+// mean of the accent's two base shades, 16% at the top left and 24% at the
+// bottom right, so the wash deepens toward the shadowed corner.
+function ground(light = ACCENT_LIGHT, dark = ACCENT_DARK) {
+  const rgb = hex => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
+  const hex = c => '#' + c.map(v => Math.round(Math.max(0, Math.min(255, v))).toString(16).padStart(2, '0')).join('');
+  const [l, d] = [rgb(light), rgb(dark)];
+  const accent = l.map((v, i) => (v + d[i]) / 2);
+  const mix = (base, t) => hex(rgb(base).map((v, i) => v + (accent[i] - v) * t));
+  return [mix(CREAM[0], 0.16), mix(CREAM[1], 0.24)];
+}
 const NAME = 'Starter';
 
 const stroke = (ctx, pts, style, width, cap = 'round') => {
@@ -194,7 +211,7 @@ function drawSubject(ctx, px) {
 const ICONS = [
   {
     id: 'starter', name: CHOSEN.name, desc: CHOSEN.desc,
-    bg: ['#fdf8ee', '#f1e4d0'],   // top left to bottom right
+    bg: ground(),   // the cream with the accent in it, top left to bottom right
     glyph: drawSubject,
   },
 ];
