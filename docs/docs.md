@@ -4,7 +4,7 @@ How a product's repository keeps its words: which files there are, what each is 
 
 ## Rules
 
-- **Each document has one job.** `AGENTS.md` is what the product is, the rules every session follows, and where to read next. `docs/<part>.md` is how one part works and why, with its traps. `docs/release.md` is how to cut a release. `CHANGELOG.md` is what each release changed for the person installing it. `README.md` is a short introduction for GitHub that sends the reader to the product's site. Nothing else is kept as a file: a plan, a roadmap or a list of tasks is out of date within weeks and then misleads whoever reads it.
+- **Each document has one job.** `AGENTS.md` is what the product is, the rules every session follows, and where to read next. `docs/<part>.md` is how one part works and why, with its traps. `docs/release.md` is how to cut a release. `CHANGELOG.md` is what each release changed for the person installing it. `docs/probing.md` is how to look at the window from a script: the variables, the steps, and the rules a probe copy keeps (`docs/structure.md`, Probing). `README.md` is a short introduction for GitHub that sends the reader to the product's site. Nothing else is kept as a file: a plan, a roadmap or a list of tasks is out of date within weeks and then misleads whoever reads it.
 - **Read the doc before the code.** `AGENTS.md` has a table of what is about to be touched and the doc to read first, and the doc is read even for a small change, since the traps are there and nowhere else. A subagent handed work on a file is told to read its doc too.
 - **A fact goes where its code is.** How a feature works, a trap, a fact learned about the toolkit or another program goes in that part's doc, under `## Rules` when breaking it loses data or brings back a bug. `AGENTS.md` gets a line only for a rule every session follows whatever it works on, or a row in its table. Keep it under 300 lines.
 - **What is so now, and why.** Not the history of how it got there. An approach tried and dropped gets one sentence, and only where someone might try it again ("Tried and dropped: …"). What was checked and how belongs in the reply to the person, not in a doc.
@@ -29,7 +29,7 @@ In this order:
 - The first line under the title says what it is about, by file: "About `look.rs`, `fonts.rs`, `assets.rs`, `assets/`, `themes/<app>.json`."
 - `## Rules` next: what must not be broken, each with its reason in the same item.
 - Then a section a piece of the part, as long as the piece needs.
-- `## Probing` last: how to see the part from a script (`docs/structure.md`, Probing).
+- No section on probing. How the window is driven from a script is one file for the product, `docs/probing.md`, since the variables and steps are one set the whole window answers to; a part's doc points to it where a state of the part is to be looked at (Checking in `docs/design.md`, a language in the window's doc).
 - A change that crosses two parts reads both docs and writes in the one whose code changed.
 
 ## The changelog
