@@ -8,7 +8,7 @@
 
 - **Nothing jumps.** What appears, goes, opens, closes, grows or moves does so over a moment, with the pattern its neighbors use (`widgets.rs`, `menu.rs`, `shell.rs`). No pause at the end of a motion.
 - **A motion that repeats runs on the window's clock** (`ambient::phase`), never `Animation::repeat`.
-- **Nothing slow is asked while a frame is built, and the main thread never waits.** A hover draws the window whole, so what `render` calls runs at every hover: what the system has is found once, at launch (`fonts::install`). A wait on the main thread holds every frame and event, and a motion that was under way appears whole: a lock a model holds, a large file, a sound go to a thread of their own. A list that grows with use draws what is in view. Speed is measured before and after (`docs/probing.md`, Measuring).
+- **Nothing slow is asked while a frame is built, and the main thread never waits.** A hover draws the window whole, so what `render` calls runs at every hover: what the system has is found once, at launch (`fonts::install`). A wait on the main thread holds every frame and event, and a motion that was under way appears whole: a lock a model holds, a large file, a sound go to a thread of their own. A list that grows with use draws what is in view. Speed is measured before and after (`docs/probing.md`, Measuring), and every optimization pass is logged (`docs/performance.md`).
 - **Every scroller that goes up and down names itself** to the router as it is drawn (`Scrollers::name`), or a flick in it scrolls whatever the pointer reaches next.
 - **A button is `choice_pill`**, a pill with an icon before its word. The toolkit's `Button` is only for an icon alone.
 - **Every word the window shows goes through `i18n::t`** and is in `locales/words.json` in every language; `cargo test -p starter-app` fails otherwise.
@@ -42,7 +42,7 @@ crates/starter-app/        the window
   macos/ windows/ linux/     what each system's package needs
 vendor/                    the toolkit and the blocks crate, each with an UPSTREAM.md
 scripts/                   the dev build, the icon, the release
-docs/                      release.md, probing.md
+docs/                      release.md, probing.md, performance.md (the optimization passes and their log)
 ```
 
 ## Running it

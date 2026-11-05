@@ -1,6 +1,6 @@
 # The Alkaline Software constitution
 
-The standards the studio's products are built to: five documents under `docs/`, and `template/`, a product that holds them as code.
+The standards the studio's products are built to: six documents under `docs/`, and `template/`, a product that holds them as code.
 
 | File | What it holds |
 |---|---|
@@ -8,6 +8,7 @@ The standards the studio's products are built to: five documents under `docs/`, 
 | [`docs/structure.md`](docs/structure.md) | how a product is put together: Rust and GPUI, the core and app crates, the vendored toolkit, the repository's folders, what each file of the app does, probing from a script |
 | [`docs/platforms.md`](docs/platforms.md) | macOS, Windows and Linux, each on Intel and ARM: what each system needs, what is gated, the installers, checking off a Mac |
 | [`docs/docs.md`](docs/docs.md) | how a product keeps its words: `AGENTS.md`, a doc a part, the changelog, how a doc is written |
+| [`docs/performance.md`](docs/performance.md) | how a product is kept fast and light: the three aims of a pass (the best speed, the least use, nothing lost), how one is done, the rules passes left, and the log each product keeps so the next pass covers only what is new |
 | [`docs/workflow.md`](docs/workflow.md) | how a product is built and released: the dev build, the version, the checks before a tag, CI, signing and notarizing, trying the installers in VMs, the stores, the update inside the app, cleaning up, and what went wrong before |
 | [`template/`](template) | **Starter**, a Rust and GPUI app for the three systems with every pattern above in working code: the window, the settings window, the buttons, the choices, the switch, the fold, the menu, the scroll router, the window's clock, the accents, eight languages, the icons and the app icon's pipeline, the release scripts and CI |
 

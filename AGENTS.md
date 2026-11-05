@@ -2,7 +2,7 @@
 
 ## What this is
 
-The constitution of **Alkaline Software**: the standards the studio's products are built to, kept in one place so the next product starts where the last one got to. Five documents under `docs/` say what the standard is and why; `template/` is the standard as a product that builds, tests and runs.
+The constitution of **Alkaline Software**: the standards the studio's products are built to, kept in one place so the next product starts where the last one got to. Six documents under `docs/` say what the standard is and why; `template/` is the standard as a product that builds, tests and runs.
 
 It is a template, not a dependency. A new product is made from `template/` by `scripts/new-product.sh`; once the product has its own docs, those docs are its whole standard and nothing in the product points back here.
 
@@ -21,6 +21,7 @@ It is a template, not a dependency. A new product is made from `template/` by `s
 | How a product is put together: Rust and GPUI, the two crates, the vendored toolkit, the repository's folders, the files of the app crate, probing | `docs/structure.md` |
 | macOS, Windows and Linux on Intel and ARM: what each needs, what is gated, the installers, checking off a Mac | `docs/platforms.md` |
 | How a product keeps its words: `AGENTS.md`, a part's doc, the changelog, how a doc is written | `docs/docs.md` |
+| Making a product faster or lighter: the three aims of a pass, how one is done, the log that makes passes incremental | `docs/performance.md` |
 | How a product is built and released: the dev build, the version, the checks, the tag, CI, signing and notarizing, trying the installers in VMs, the stores, the update inside the app, cleaning up | `docs/workflow.md`, then `template/docs/release.md` |
 | The template's code | `template/AGENTS.md` |
 
