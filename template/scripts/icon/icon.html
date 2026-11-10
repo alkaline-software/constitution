@@ -59,13 +59,16 @@
 // Otherwise the body is an inset squircle with a margin and a shadow: the
 // PNGs the window and the site show.
 //
-// The navy, the amber and the violet spark are the studio's and the same in
-// every icon. ACCENT is the product's accent at its dark shade, in the one
+// The navy and the amber are the studio's and the same in every icon. The
+// violet spark is the mark of a model at work: AT_WORK says whether one
+// works in the product, and a product with none sets it false and draws no
+// spark. ACCENT is the product's accent at its dark shade, in the one
 // place the subject has for a color of its own. The ground is the studio's
 // cream with a fifth of the accent in it (`ground`): ACCENT_LIGHT and
 // ACCENT_DARK are the accent's base shades in the two appearances
 // (docs/design.md, The accents), and a product sets all three to its own.
 const NAVY = '#2b2556', AMBER = '#ffb83e', VIOLET = '#6a3fd9', ACCENT = '#94a7ed';
+const AT_WORK = true;
 const ACCENT_LIGHT = '#5061B3', ACCENT_DARK = '#94A7ED';
 const CREAM = ['#fdf8ee', '#f1e4d0'];   // the studio's ground, top left to bottom right
 
@@ -102,7 +105,7 @@ function snap(u, v, w) {
 // VARIANT) with its own, one thing seen plainly, lines only, no words. This
 // placeholder is a single sheet of paper: its corner folded down in the
 // accent, three lines of writing, one of them amber, and the spark at the
-// top left. `u` is pixels per unit, so the drawing can simplify as it gets
+// top left when a model is at work. `u` is pixels per unit, so the drawing can simplify as it gets
 // small: below 32 px the three lines become two thicker ones.
 // ---------------------------------------------------------------------------
 
@@ -157,11 +160,11 @@ const VARIANT = 0;
 const CANDIDATES = [
   {
     name: 'A sheet of paper',
-    desc: 'The placeholder subject: one sheet with its top right corner folded down in the accent, three lines of writing with the amber one in the middle, and the spark at the top left, the mark of the model at work. Below 32 px the lines become two thicker strokes so they do not blur together. A product draws its own subject here.',
+    desc: 'The placeholder subject: one sheet with its top right corner folded down in the accent, three lines of writing with the amber one in the middle, and the spark at the top left, the mark of a model at work, where one is (`AT_WORK`). Below 32 px the lines become two thicker strokes so they do not blur together. A product draws its own subject here.',
     subject(ctx, u, small) {
       drawSheet(ctx, u);
       drawLines(ctx, u, small);
-      ctx.fillStyle = VIOLET; sparkle(ctx, 37, 30, small ? 6.5 : 5.5); ctx.fill();
+      if (AT_WORK) { ctx.fillStyle = VIOLET; sparkle(ctx, 37, 30, small ? 6.5 : 5.5); ctx.fill(); }
     },
     // The silhouette and the one feature cut out of it, for the menu bar.
     silhouette(ctx) { sheetPath(ctx, SHEET, 100); ctx.fill(); ctx.stroke(); },
@@ -187,7 +190,7 @@ const CANDIDATES = [
         const [ys, ws] = snap(u, y, small ? 6.5 : 4.5);
         stroke(ctx, [[xa, ys], [xb, ys]], color, ws);
       }
-      ctx.fillStyle = VIOLET; sparkle(ctx, 37, 30, small ? 6.5 : 5.5); ctx.fill();
+      if (AT_WORK) { ctx.fillStyle = VIOLET; sparkle(ctx, 37, 30, small ? 6.5 : 5.5); ctx.fill(); }
     },
     silhouette(ctx) { ctx.beginPath(); ctx.rect(SHEET.x0, SHEET.y0, SHEET.x1 - SHEET.x0, SHEET.y1 - SHEET.y0); ctx.fill(); ctx.stroke(); },
     cut(ctx) {
