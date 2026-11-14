@@ -698,12 +698,18 @@ impl Render for Shell {
                     |_, _, _| (),
                     move |_, _, window, cx| {
                         let router = this.clone();
-                        window.on_mouse_event(move |e: &ScrollWheelEvent, phase, _, cx| {
+                        window.on_mouse_event(move |e: &ScrollWheelEvent, phase, window, cx| {
                             if phase == DispatchPhase::Capture {
-                                let taken = router.update(cx, |s, _| s.scrollers.route(e)).unwrap_or(false);
-                                if taken {
-                                    cx.stop_propagation();
-                                    let _ = router.update(cx, |_, cx| cx.notify());
+                                match router.update(cx, |s, _| s.scrollers.route(e)) {
+                                    Ok(crate::scroll::Route::Stop) => {
+                                        cx.stop_propagation();
+                                        let _ = router.update(cx, |_, cx| cx.notify());
+                                    }
+                                    Ok(crate::scroll::Route::Give(wheel)) => {
+                                        cx.stop_propagation();
+                                        wheel(e, window, cx);
+                                    }
+                                    _ => {}
                                 }
                             }
                         });
