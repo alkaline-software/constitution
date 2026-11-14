@@ -41,7 +41,7 @@ crates/starter-app/        the window
   assets/ themes/ locales/   icons, fonts, the app icon; the palette; the words
   macos/ windows/ linux/     what each system's package needs
 vendor/                    the toolkit and the blocks crate, each with an UPSTREAM.md
-scripts/                   the dev build, the icon, the release
+scripts/                   the dev build, the icon, the README's picture (make-readme-gif.sh, readme/), the release
 docs/                      release.md, probing.md, performance.md (the optimization passes and their log)
 ```
 

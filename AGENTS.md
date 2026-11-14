@@ -17,7 +17,7 @@ It is a template, not a dependency. A new product is made from `template/` by `s
 
 | Starting | Read |
 |---|---|
-| Anything a person sees: a window, a page, a control, a button, a color, the faces, an icon (Tabler's, Catppuccin's, one drawn by hand), the app icon, a menu bar item, motion, scrollers, a settings window, the languages | `docs/design.md` |
+| Anything a person sees: a window, a page, a control, a button, a color, the faces, an icon (Tabler's, Catppuccin's, one drawn by hand), the app icon, the README's picture, a menu bar item, motion, scrollers, a settings window, the languages | `docs/design.md` |
 | How a product is put together: Rust and GPUI, the two crates, the vendored toolkit, the repository's folders, the files of the app crate, probing | `docs/structure.md` |
 | macOS, Windows and Linux on Intel and ARM: what each needs, what is gated, the installers, checking off a Mac | `docs/platforms.md` |
 | How a product keeps its words: `AGENTS.md`, a part's doc, the changelog, how a doc is written | `docs/docs.md` |

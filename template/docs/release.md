@@ -41,6 +41,8 @@ cargo check -p starter-app
 
 `## vX.Y.Z` at the top of `CHANGELOG.md`, for the person installing the app: a numbered list, a topic in bold and one sentence, small fixes under **Fixes**, ten items at most. `scripts/release-notes.sh X.Y.Z` prints what the release page will show.
 
+When the release changes what the README's picture shows (a part, its place, its keys, how it is brought in), change the drawing in `scripts/readme/readme.html` and run `scripts/make-readme-gif.sh`, then commit `.github/readme.gif` with the rest.
+
 ### 3. Check it before the tag
 
 Commit the bump and the changelog, then:

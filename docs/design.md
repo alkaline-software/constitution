@@ -160,6 +160,45 @@ Every product's icon is one drawing in one manner, so the Dock reads them as one
 
 Nothing else is needed for the icon. A change to it is made on the page, looked at there, rendered again, built, and the assets committed. The other pictures a release carries are drawn by scripts of their own in the studio's cream and the product's accent, and committed: the disk image's background (`scripts/dmg/`), the Windows installer's splash (`scripts/splash/`, the icon and the name over the progress bar Velopack draws), and the Microsoft Store's tiles.
 
+## The README's picture
+
+Every product's README opens with one moving picture: what the product does, played as a person does it, in the hand of the studio's sites. It is a drawing, never a screen recording: a recording carries one machine's fonts, one appearance and whatever happened to be open, goes stale with every change of the window, and cannot be made again the same way. A drawing is made again in seconds when the product changes.
+
+### The hand
+
+- **Hairlines on warm paper.** The ground is `#F3F1EA`, a window or a screen a sheet of `#F8F6F0` with an edge of `#8E8A80`, words in `#1F1E1D` and `#77746B`, the sites' own neutrals. Each part is a pale wash of its color (9%) with an edge of it, its name in its color. Lines stand for words: a paragraph is three hairlines of different lengths.
+- **The faces are the sites'**: Source Serif 4 for the name, the title and what a part is called, its italic for a line that says what something does, JetBrains Mono for a key, a command or a short label. They are loaded from Google Fonts, so the picture looks the same on every machine that renders it.
+- **One layout.** In a 1920 by 1008 box: the icon, the name and its kanji at the top left, the site or the system at the top right in the accent; under them the title, one line of what the product is for, in the site's words. The stage at the left (the product's window, or a screen with its windows); at the right, a list of what plays, a row each, its keys on caps, lit in its color while it plays and a shade darker once it has. The list is what makes the picture read without words under it.
+- **The story is the product's, as its site tells it**, and shows what it has now: its parts, where they are, how each is brought in. Each move is what a person would do (a click on the button that does it, a drag, a key), with the pointer the Mac draws, slightly smaller while pressed. A part comes in from where it lives and moves what is beside it, as the window does.
+- **The product's own curves.** A move runs on the curve the window uses for it (the studio's ease out quint for what slides in, the window's own where it has one), at the length the window gives it.
+- **The loop never runs backward.** At its end the stage fades out where it stands and fades in as it began, so the first frame follows the last without the story undoing itself in reverse.
+
+### Making it
+
+`scripts/readme/readme.html` is the drawing: one canvas page that plays in a browser, so it is looked at there, and draws any moment on its own. It keeps a script of times and works out every part's place from it for any moment, never from the frame before, so a frame can be drawn alone. It exposes `ready` (its faces and the icon loaded), `FRAMES` and `frame(i)`, which draws frame i and returns it as a PNG. Nothing in it is named `frame` but that: a drawing function of that name is the page's hook, and the two call each other.
+
+`scripts/make-readme-gif.sh` renders it, on a Mac with ffmpeg and the network for the faces:
+
+1. `scripts/readme/render.swift` loads the page in a windowless `WKWebView`, waits for `ready`, and writes every frame as a PNG. The icon is handed to the page as data (`README_ICON`, read into `ICON`): drawn from a file, it taints the canvas and no frame can be read back.
+2. ffmpeg makes one palette from every frame (128 colors) and the GIF from the frames with it (Bayer dither, `diff_mode=rectangle`), looped, at `.github/readme.gif`. One palette for the whole loop keeps a color from shifting between frames.
+
+| What | Size |
+|---|---|
+| Box, canvas | 1920 × 1008, drawn on a 1600 × 840 canvas |
+| Frames | 30 a second |
+| Length | 12 to 15 seconds |
+| File | about 3 MB at most |
+
+The template's drawing plays its own window and is a starting point: a new product keeps the hand, the layout and the machinery, replaces the story with its own, and renders its picture before its first release. `scripts/make-readme-gif.sh <dir> <first> <last>` writes those frames as PNGs instead, to look at before the GIF is made. The README shows it at the head, `<p align="center"><img src=".github/readme.gif" alt="…" width="100%"></p>`, the alt saying what plays in a sentence or two.
+
+### Checking it
+
+Look at frames, not only at the GIF playing: a sheet of every 45th frame for the whole story, then each move's middle, where two states cross-fade, and the loop's last and first frames side by side. Two things fading in one place (an old caption and a new one, the old contents and the new) stand over each other in a smudge, so the one goes before the other comes. A part pushed by another must stay inside the stage. The pointer at rest stands clear of what it is not pointing at.
+
+### Keeping it true
+
+The picture describes the product as its site does and shows nothing the product does not have. A release that changes what it shows (a part, its place, its keys, how it is brought in) changes the drawing in the same pass, and the GIF is rendered again and committed with it. The product's `docs/design.md` says what its picture shows and why, as it says what its icon is.
+
 ## The window
 
 Laid out like the Claude desktop app, as the Mac's own settings are.

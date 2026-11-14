@@ -37,7 +37,7 @@ How an Alkaline Software product is put together: the stack, the workspace, the 
 | `crates/<app>-app/macos/`, `windows/`, `linux/` | what each system's package needs: the `Info.plist` additions, the Store's manifest and tiles, the snap's metadata and desktop file |
 | `vendor/` | the toolkit and any crate that had to be changed, each with an `UPSTREAM.md` |
 | `docs/` | how each part works and its traps, one file a part (`docs/docs.md`); `release.md`, how to cut a release; `probing.md`, how to look at the window from a script |
-| `scripts/` | the dev build, the icon, the release (`docs/workflow.md`) |
+| `scripts/` | the dev build, the icon, the README's picture, the release (`docs/workflow.md`) |
 | `.github/workflows/` | `rust.yml` on every push, `release.yml` on a tag |
 
 Nothing else at the root. A plan or a roadmap kept as a file goes stale the week it is written; what is so now is in `docs/`, and what each release changed is in `CHANGELOG.md`.

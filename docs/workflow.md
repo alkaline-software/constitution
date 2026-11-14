@@ -42,6 +42,7 @@ What a product's repository carries for this, as the template has it:
 | `scripts/dev-app.sh` | the build in `target/debug` as an app bundle of its own (`docs/platforms.md`, macOS) |
 | `scripts/relaunch.sh` | quit the dev build and start the new one once the agent's turn is over (`--installed` starts the one in `/Applications`) |
 | `scripts/make-icon.sh`, `scripts/icon/` | the app icon rendered from its page at every size (`docs/design.md`, The app icon) |
+| `scripts/make-readme-gif.sh`, `scripts/readme/` | the README's moving picture rendered from its drawing, at `.github/readme.gif` (`docs/design.md`, The README's picture) |
 | `scripts/dmg/background.py`, `background.png` | the disk image's background (below) |
 | `scripts/splash/` | the Windows installer's splash |
 | `scripts/windows-msix.ps1`, `scripts/windows-store-assets.py` | the Microsoft Store's package and its tiles |
@@ -64,7 +65,7 @@ What a product's repository carries for this, as the template has it:
 The template's `docs/release.md` has each step's commands. In short, and why each is there:
 
 1. **Bump the version** in `Cargo.toml` and refresh the lock, since CI builds `--locked`.
-2. **Write the changelog section**, which is the release's notes.
+2. **Write the changelog section**, which is the release's notes. A release that changes what the README's picture shows draws the picture again in the same pass (`docs/design.md`, The README's picture).
 3. **Keep the display on and run `release-check.sh`.** The notary credential is out of reach while the screen is locked, and the check holds the commit to everything the tag will be held to, so a tag is not redone for a mistake a minute's check finds.
 4. **Push, wait for the tests on all six runners, then tag.** CI is the only place the tests run on Windows and Linux.
 5. **Build, sign and notarize the Mac images on the signer's Mac**, from the tagged commit, while CI builds the rest.
